@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: saudacao-service
+  profiles:
+    active:
+    - it
+server:
+  port: 8081
+saudacao-service:
+  saudacao: Hello
+  nome-padrao: World
