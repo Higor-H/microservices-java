@@ -3,7 +3,10 @@ spring:
     name: saudacao-service
   profiles:
     active:
-    - it
+    - es
+  config:
+    import:
+    - optional:configserver:http://localhost:8888
 server:
   port: 8081
 saudacao-service:
