@@ -5,8 +5,8 @@ spring:
     name: produto-service
   datasource:
     url: jdbc:postgresql://localhost/produto_db
-    username: postgres
-    password: 753951
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
   jpa:
    hibernate:
       ddl-auto: none

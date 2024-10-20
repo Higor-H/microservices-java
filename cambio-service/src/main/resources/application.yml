@@ -1,3 +1,12 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'
+  endpoint:
+    health:
+      show-details: always
 server:
   port: 8100
 spring:
@@ -5,30 +14,22 @@ spring:
     name: cambio-service
   datasource:
     url: jdbc:postgresql://localhost/cambio_db
-    username: postgres
-    password: 753951
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
   jpa:
-   hibernate:
-      ddl-auto: none
-   show-sql: true
-   properties:
-     hibernate:
-       format_sql: true
+    hibernate:
+      ddl-auto: none 
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
   flyway:
     locations:
     - classpath:/db_migration
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-        - '*'
-  
-  endpoint:
-    health:
-      show-details: always
-
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=10m
 
 eureka:
   client:
@@ -37,3 +38,15 @@ eureka:
 
   instance:
     prefer-ip-address: true
+      
+resilience4j:
+  circuitbreaker:
+    instances:
+      cotacaoClient:
+        register-health-indicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automatic-transition-from-open-to-half-open-enabled: true
