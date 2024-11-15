@@ -31,3 +31,22 @@ services:
       - "8765:8765"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
+
+
+  produto-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: produto_db
+
+  produto-service:
+    image: produto-service:0.0.1-SNAPSHOT
+    depends_on:
+      - produto-db
+      - eureka-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://produto-db:5432/produto_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
